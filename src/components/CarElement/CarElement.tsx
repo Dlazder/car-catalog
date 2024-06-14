@@ -1,8 +1,9 @@
 import s from './CarElement.module.scss'
 
 export interface CarElementProps {
-    name: string
-    year: string
+    name: any
+    year: any
+	horsepower: any
 }
 
 
@@ -13,6 +14,8 @@ export function CarElement(props: {data: CarElementProps}) {
             <span>{props.data.name}</span>
             <br />
             <span>{props.data.year}</span>
+			<br />
+			<span>{props.data.horsepower}</span>
         </div>
     )
 }

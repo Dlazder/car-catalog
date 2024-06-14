@@ -3,6 +3,7 @@ import { isAdmin } from '../actions'
 
 import {CreateRecord} from '../../components/CreateRecord'
 import s from './page.module.scss'
+import { EditRecords } from '@/components/EditRecords/EditRecords'
 
 export default async function AdminPage() {
     const isAllowed = await isAdmin()
@@ -13,6 +14,7 @@ export default async function AdminPage() {
     return (
         <main>
             <CreateRecord/>
+			<EditRecords/>
         </main>
     )
 }

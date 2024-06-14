@@ -2,9 +2,10 @@
 
 import { cookies } from 'next/headers'
 import { SignJWT, jwtVerify } from 'jose'
+import { CarElementProps } from '@/components/CarElement'
+import { openDB } from './api/sqlite'
 const secretKey = process.env.SECRET_KEY
 const key = new TextEncoder().encode(secretKey)
-
 
 
 export async function login(formData: FormData) {
@@ -18,7 +19,6 @@ export async function logout() {
     cookies().set('session', '', {expires: new Date(0)})
 }
 
-
 export async function encrypt(payload: any) {
     return await new SignJWT(payload).setProtectedHeader({alg: 'HS256'})
     .setIssuedAt()
@@ -31,7 +31,6 @@ export async function decrypt(input: string): Promise<any> {
     return payload
 }
 
-
 export async function isAdmin() {
     let session = cookies().get('session')?.value
     if (!session) return false
@@ -39,4 +38,16 @@ export async function isAdmin() {
     if (user.login === process.env.LOGIN && user.password === process.env.PASSWORD) {
         return true
     } else return false
+}
+
+export async function addRecord(data: CarElementProps) {
+	const db = await openDB()
+	db.run(`INSERT INTO cars (name, year, horsepower) VALUES (?, ?, ?)`, [data.name, data.year, data.horsepower])
+}
+
+
+
+export async function removeRecord(id: string) {
+	const db = await openDB()
+	db.run(`DELETE FROM cars WHERE id=?`, [id])
 }
